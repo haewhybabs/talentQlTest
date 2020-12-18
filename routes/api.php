@@ -21,4 +21,6 @@ Route::get('/users/{user}','UserController@test');
 Route::middleware('auth:api')->group(function () {
 
     Route::post('/task/create','TaskController@create');
+    Route::put('/task/update','TaskController@update');
+    Route::get('/task/edit/{task}','TaskController@edit');
 });
