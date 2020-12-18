@@ -20,7 +20,6 @@ class CreateTasksTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->boolean('status')->default(0);
-            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
