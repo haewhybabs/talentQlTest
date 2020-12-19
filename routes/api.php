@@ -22,5 +22,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('/task/create','TaskController@create');
     Route::put('/task/update','TaskController@update');
-    Route::get('/task/edit/{task}','TaskController@edit');
+    Route::get('/task/view/{task}','TaskController@view');
+    Route::get('/task','TaskController@index');
+    Route::delete('/task/delete/{task}', 'TaskController@delete');
 });

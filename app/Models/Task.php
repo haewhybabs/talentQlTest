@@ -20,4 +20,8 @@ class Task extends Model
         return $this->belongsTo(User::class);
     }
 
+    public static function findUserTask($userId){
+        return Task::where('user_id',$userId)->get();
+    }
+
 }
