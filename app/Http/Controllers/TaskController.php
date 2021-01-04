@@ -1,14 +1,11 @@
 <?php
-
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
-
 class TaskController extends Controller
 {
-
     public function index(){
         try{
             $userId = auth()->user()->id;
@@ -31,7 +28,6 @@ class TaskController extends Controller
             if ($validatedData->fails()) {
                 return response()->json(['error'=>$validatedData->errors()],422)->header('content-Type','application/json');
             }
-
             $task = new Task();
             $task->title = $request->input('title');
             $task->description=$request->input('description');
@@ -39,22 +35,16 @@ class TaskController extends Controller
             $task->save();
             return response()->json(['status'=>true,'data'=>$task],200)->header('content-Type','application/json');
         }
-
         catch (\Exception $exception){
             return response()->json(['error'=>$exception->getMessage()],500)->header('content-Type','application/json');
         }
-
     }
-
-    public function update(Request $request){
+    //Route model binding 
+    public function update(Request $request,Task $task){
         try{
-
-            $taskId = $request->input('task_id');
-            $task = Task::find($taskId);
             if(!$task){
                 return response()->json(['status'=>false,'message'=>'Task not found'],404)->header('content-Type','application/json');
             }
-           
             //First check if input post exists and then update else use the previous
             $task->title=$request->input('title')?$request->input('title'):$task->title;
             $task->description=$request->input('description')?$request->input('description'):$task->description;
@@ -62,26 +52,23 @@ class TaskController extends Controller
             $task->save();
             return response()->json(['status'=>true,'data'=>$task],200)->header('content-Type','application/json'); 
         }
-
         catch (\Exception $exception){
             return response()->json(['error'=>$exception->getMessage()],500)->header('content-Type','application/json');
         }
     }
-
+    //Route model binding used
     public function view(Task $task){
         try{
             if($task){
                 return response()->json(['status'=>true,'data'=>$task],200)->header('content-Type','application/json'); 
             }
             return response()->json(['status'=>false,'message'=>'Task not found'],404)->header('content-Type','application/json'); 
-           
         }
         catch (\Exception $exception){
             return response()->json(['error'=>$exception->getMessage()],500)->header('content-Type','application/json');
         }
-    
     }
-
+    //Route model binding
     public function delete(Task $task){
         try{
             if($task->delete()){
@@ -93,6 +80,4 @@ class TaskController extends Controller
             return response()->json(['error'=>$exception->getMessage()],500)->header('content-Type','application/json');
         }
     }
-
-    
 }
